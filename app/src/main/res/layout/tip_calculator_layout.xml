@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/bill_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Bill Amount"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText,InvalidId" />
+
+    <TextView
+        android:id="@+id/percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Percent"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/bill_amount"
+        app:layout_constraintTop_toBottomOf="@id/bill_amount"
+        tools:ignore="InvalidId" />
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="@string/tip"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/bill_amount"
+        app:layout_constraintTop_toBottomOf="@id/percent"
+        tools:ignore="InvalidId" />
+
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Total"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/bill_amount"
+        app:layout_constraintTop_toBottomOf="@id/tip"
+        tools:ignore="InvalidId" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/input_bill_amount"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/black"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toEndOf="@id/bill_amount"
+        app:layout_constraintTop_toTopOf="@id/bill_amount" />
+
+    <TextView
+        android:id="@+id/view_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:textColor="@color/grey"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/input_bill_amount"
+        app:layout_constraintTop_toTopOf="@id/percent" />
+
+    <TextView
+        android:id="@+id/view_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="$0.00"
+        android:textColor="@color/grey"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/input_bill_amount"
+        app:layout_constraintTop_toBottomOf="@id/view_percent" />
+
+    <TextView
+        android:id="@+id/view_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="$0.00"
+        android:textColor="@color/grey"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/input_bill_amount"
+        app:layout_constraintTop_toBottomOf="@id/view_tip" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/decrease_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/button_color"
+        android:focusable="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="-"
+        android:textColor="@color/white"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/increase_btn"
+        app:layout_constraintTop_toTopOf="@id/view_percent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/increase_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/button_color"
+        android:enabled="true"
+        android:focusable="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="+"
+        android:textColor="@color/white"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/input_bill_amount"
+        app:layout_constraintTop_toTopOf="@id/view_percent"  />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

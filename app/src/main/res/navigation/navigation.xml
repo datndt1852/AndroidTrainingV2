@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/fragmentTipCalculator">
+    <fragment
+        android:id="@+id/fragmentTipCalculator"
+        android:name="com.example.myapplication.FragmentTipCalculator"
+        android:label="Tip Calculator"
+        tools:layout="@layout/tip_calculator_layout">
+        <action
+            android:id="@+id/action_fragmentTipCalculator_to_fragmentCalcalator"
+            app:destination="@id/fragmentCalcalator" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCalcalator"
+        android:name="com.example.myapplication.FragmentCalculator"
+        android:label="Calcalator"
+        tools:layout="@layout/calculaytor_layout"
+        >
+        <action
+            android:id="@+id/action_fragmentCalcalator_to_fragmentTipCalculator"
+            app:destination="@id/fragmentTipCalculator" />
+    </fragment>
+</navigation>
