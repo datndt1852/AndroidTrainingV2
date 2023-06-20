@@ -4,6 +4,9 @@
         android:id="@+id/navigate"
         android:title="Calculator" />
     <item
+        android:id="@+id/navigate2"
+        android:title="List Hero" />
+    <item
         android:id="@+id/saveResult"
         android:checkable="true"
         android:title="Lưu kết quả" />

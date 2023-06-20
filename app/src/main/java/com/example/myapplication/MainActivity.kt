@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -7,11 +8,14 @@ import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.myapplication.adapter.ListHeroAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentCalculator.ResultCalListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
+    private lateinit var myPreference: MyPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +31,6 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.fragmentTipCalculator)
         }
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
 
@@ -42,15 +45,34 @@ class MainActivity : AppCompatActivity() {
             R.id.navigate -> {
                 if (::navController.isInitialized) {
                     if (navController.currentDestination?.id == R.id.fragmentTipCalculator) {
-                        navController.navigate(R.id.action_fragmentTipCalculator_to_fragmentCalcalator)
+                        navController.navigate(R.id.action_fragmentTipCalculator_to_fragmentCalculator)
                     } else {
-                        navController.navigate(R.id.action_fragmentCalcalator_to_fragmentTipCalculator)
+                        navController.navigate(R.id.action_fragmentCalculator_to_fragmentTipCalculator)
                     }
                     return true
                 }
                 super.onOptionsItemSelected(item)
             }
+            R.id.saveResult -> {
+                if (::navController.isInitialized){
+                    if (item.isCheckable){
+                        item.setCheckable(false)
+                        // i want call saveResultCal here
+                    }
+                }
+                super.onOptionsItemSelected(item)
+            }
+            R.id.navigate2 -> {
+                if (::navController.isInitialized){
+                    navController.navigate(R.id.action_fragmentTipCalculator_to_fragmentListHero)
+                }
+                super.onOptionsItemSelected(item)
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun saveResultCal(result: String) {
+        myPreference.setResultCal(result)
     }
 }

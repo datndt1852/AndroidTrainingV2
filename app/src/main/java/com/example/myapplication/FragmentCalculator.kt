@@ -1,165 +1,177 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.CalculaytorLayoutBinding
 import com.google.android.material.textview.MaterialTextView
 
-class FragmentCalculator : Fragment() {
+class FragmentCalculator(private val resultCalListener: ResultCalListener) : Fragment() {
     private var _binding: CalculaytorLayoutBinding? = null
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
     private lateinit var display: MaterialTextView
-    private var operator: String? = null
-    private var result: Int = 0
-    private var inputNumber: String = "0"
-    private var isInput: Boolean = false
+    private var result: Double = 0.0
+    private var currentNumber: Double = 0.0
+    private var currentOperator: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = CalculaytorLayoutBinding.inflate(inflater, container, false)
-        val view = binding?.root
+        val view = binding.root
 
-        display = binding!!.resultNumber
+        display = binding.resultNumber
+        return view
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupNumberButtons()
         setupOperatorButtons()
         setupEqualsButton()
         setupClearButton()
-        return view
+
+        binding.equal.setOnClickListener{
+            resultCalListener.saveResultCal(result.toString())
+        }
     }
 
     private fun setupClearButton() {
-        binding?.clear?.setOnClickListener {
-            result = 0
-            inputNumber = "0"
-            operator = null
-            display.text = result.toString()
-            binding?.clear?.text = "AC"
+        binding.clear.setOnClickListener {
+            clearDisplay()
         }
     }
 
     private fun setupEqualsButton() {
-        binding?.equal?.setOnClickListener {
-            calculate()
+        binding.equal.setOnClickListener {
+            if (currentOperator != null) {
+                calculate()
+                currentOperator = null
+            }
         }
     }
 
-    private fun calculate() {
+    private fun calculate(
+    ) {
+        val operator = currentOperator ?: return
+        val secondOperand = currentNumber
+
         when (operator) {
-            "+" -> {
-                result += inputNumber.toInt()
-            }
-            "-" -> {
-                result -= inputNumber.toInt()
-            }
-            "*" -> {
-                result *= inputNumber.toInt()
-            }
+            "+" -> result += secondOperand
+            "-" -> result -= secondOperand
+            "*" -> result *= secondOperand
             "/" -> {
-                result -= inputNumber.toInt()
-            }
-            else -> {
-                /* no-op */
+                if (secondOperand != 0.0) {
+                    result /= secondOperand
+                } else {
+                    display.text = "Error"
+                    return
+                }
             }
         }
         display.text = result.toString()
+        currentNumber = result
+
     }
 
     private fun setupOperatorButtons() {
-        binding?.plus?.setOnClickListener {
-            result += inputNumber.toInt()
-            if (operator != null) {
-                display.text = result.toString()
-            }
-            operator = "+"
-            inputNumber = ""
+        binding.plus.setOnClickListener {
+            applyOperator("+")
         }
-        binding?.minus?.setOnClickListener {
-            if (operator == null) {
-                result += inputNumber.toInt()
-            } else {
-                result -= inputNumber.toInt()
-                display.text = result.toString()
-            }
-            operator = "-"
-            inputNumber = ""
+        binding.minus.setOnClickListener {
+            applyOperator("-")
         }
-        binding?.multiply?.setOnClickListener {
-            if (operator == null) {
-                result += inputNumber.toInt()
-            } else {
-                result *= inputNumber.toInt()
-                display.text = result.toString()
-            }
-            operator = "*"
-            inputNumber = ""
+        binding.multiply.setOnClickListener {
+            applyOperator("*")
         }
-        binding?.divide?.setOnClickListener {
-            try {
-                if (operator == null) {
-                    result += inputNumber.toInt()
-                } else {
-                    result -= inputNumber.toInt()
-                    display.text = result.toString()
-                }
-            } catch (exception: Exception) {
-                // handle divide zero
-            }
-            operator = "/"
-            inputNumber = ""
+        binding.divide.setOnClickListener {
+            applyOperator("/")
         }
+    }
+
+    private fun applyOperator(operator: String) {
+        if (currentOperator != null) {
+            calculate()
+        }
+        currentOperator = operator
+        currentNumber = display.text.toString().toDouble()
     }
 
     private fun setupNumberButtons() {
-        binding?.one?.setOnClickListener {
-            updateInputNumber(1)
+        binding.one.setOnClickListener {
+            appendNumber(1)
         }
-        binding?.two?.setOnClickListener {
-            updateInputNumber(2)
+        binding.two.setOnClickListener {
+            appendNumber(2)
         }
-        binding?.three?.setOnClickListener {
-            updateInputNumber(3)
+        binding.three.setOnClickListener {
+            appendNumber(3)
         }
-        binding?.four?.setOnClickListener {
-            updateInputNumber(4)
+        binding.four.setOnClickListener {
+            appendNumber(4)
         }
-        binding?.five?.setOnClickListener {
-            updateInputNumber(5)
+        binding.five.setOnClickListener {
+            appendNumber(5)
         }
-        binding?.six?.setOnClickListener {
-            updateInputNumber(6)
+        binding.six.setOnClickListener {
+            appendNumber(6)
         }
-        binding?.seven?.setOnClickListener {
-            updateInputNumber(7)
+        binding.seven.setOnClickListener {
+            appendNumber(7)
         }
-        binding?.eight?.setOnClickListener {
-            updateInputNumber(8)
+        binding.eight.setOnClickListener {
+            appendNumber(8)
         }
-        binding?.nine?.setOnClickListener {
-            updateInputNumber(9)
+        binding.nine.setOnClickListener {
+            appendNumber(9)
         }
-        binding?.zero?.setOnClickListener {
-            updateInputNumber(0)
+        binding.zero.setOnClickListener {
+            appendNumber(0)
+        }
+        binding.dot.setOnClickListener {
+            appendDecimal()
         }
     }
 
-    private fun updateInputNumber(inputNumber: Int) {
-        this.inputNumber = if (this.inputNumber == "0")
-            "$inputNumber"
-        else
-            "${this.inputNumber}$inputNumber"
-        display.text = this.inputNumber
+    private fun appendNumber(number: Int) {
+        val currentText = display.text.toString()
+        val newText = if (currentText == "0") {
+            number.toString()
+        } else {
+            currentText + number
+        }
+        display.text = newText
+        currentNumber = newText.toDouble()
+    }
+
+    private fun appendDecimal() {
+        val currentText = display.text.toString()
+        if (!currentText.contains(".")) {
+            val newText = currentText + "."
+            display.text = newText
+            currentNumber = newText.toDouble()
+        }
+    }
+
+    private fun clearDisplay() {
+        display.text = "0"
+        result = 0.0
+        currentNumber = 0.0
+        currentOperator = null
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    interface ResultCalListener {
+        fun saveResultCal(result: String)
     }
 }

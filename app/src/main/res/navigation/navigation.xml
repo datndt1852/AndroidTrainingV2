@@ -10,17 +10,34 @@
         android:label="Tip Calculator"
         tools:layout="@layout/tip_calculator_layout">
         <action
-            android:id="@+id/action_fragmentTipCalculator_to_fragmentCalcalator"
-            app:destination="@id/fragmentCalcalator" />
+            android:id="@+id/action_fragmentTipCalculator_to_fragmentCalculator"
+            app:destination="@id/fragmentCalculator" />
+        <action
+            android:id="@+id/action_fragmentTipCalculator_to_fragmentListHero"
+            app:destination="@id/fragmentListHero" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentCalcalator"
+        android:id="@+id/fragmentCalculator"
         android:name="com.example.myapplication.FragmentCalculator"
         android:label="Calcalator"
         tools:layout="@layout/calculaytor_layout"
         >
         <action
-            android:id="@+id/action_fragmentCalcalator_to_fragmentTipCalculator"
+            android:id="@+id/action_fragmentCalculator_to_fragmentTipCalculator"
             app:destination="@id/fragmentTipCalculator" />
+        <action
+            android:id="@+id/action_fragmentCalculator_to_fragmentListHero"
+            app:destination="@id/fragmentListHero" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentListHero"
+        android:name="com.example.myapplication.FragmentListHero"
+        android:label="FragmentListHero" >
+        <action
+            android:id="@+id/action_fragmentListHero_to_fragmentTipCalculator"
+            app:destination="@id/fragmentTipCalculator" />
+        <action
+            android:id="@+id/action_fragmentListHero_to_fragmentCalculator"
+            app:destination="@id/fragmentCalculator" />
     </fragment>
 </navigation>
